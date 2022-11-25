@@ -17,13 +17,13 @@ def criar_banco_de_dados():
 
 # Definicao da rota de consulta de dados
 @app.route('/tarefas')
-def RetrieveDataList():
+def carregar_tarefas():
     tarefas = ModeloTarefa.query.all()
     return jsonify(str(tarefas))
 
 # Definicao da rota de escrita de dados
 @app.route('/tarefas/cadastrar' , methods = ['POST'])
-def create():
+def cadastrar_tarefa():
     id_tarefa = request.form['id_tarefa']
     titulo = request.form['titulo']
     status = request.form['status']
@@ -36,19 +36,19 @@ def create():
 
 # Definicao da rota de consulta de dados de tarefas ativas
 @app.route('/tarefas/ativas', methods = ['GET'])
-def RetrieveActiveDataList():
+def carregar_tarefas_ativas():
     tarefas = ModeloTarefa.query.filter_by(status=0).all()
     return jsonify(str(tarefas))
 
 # Definicao da rota de consulta de dados de tarefas finalizadas
 @app.route('/tarefas/finalizadas')
-def RetrieveCompleteDataList():
+def carregar_tarefas_finalizadas():
     tarefas = ModeloTarefa.query.filter_by(status=1).all()
     return jsonify(str(tarefas))
 
 # Definicao da rota de consulta de dados de uma unica tarefa
 @app.route('/tarefas/<int:id>')
-def RetrieveSingletarefa(id):
+def buscar_tarefa(id):
     tarefa = ModeloTarefa.query.filter_by(id_tarefa=id).first()
     if tarefa:
         return jsonify(str(tarefa))
@@ -56,7 +56,7 @@ def RetrieveSingletarefa(id):
 
 # Definicao da rota de atualizacao de dados de um aunica tarefa
 @app.route('/tarefas/<int:id>/atualizar', methods = ['POST', 'PUT'])
-def update(id):
+def atualizar_tarefa(id):
     tarefa = ModeloTarefa.query.filter_by(id_tarefa=id).first()
     if tarefa:
         db.session.delete(tarefa)
@@ -73,7 +73,7 @@ def update(id):
 
 # Definicao da rota de remocao de dados de uma unica tarefa
 @app.route('/tarefas/<int:id>/deletar', methods = ['POST', 'DELETE'])
-def delete(id):
+def deletar_tarefa(id):
     tarefa = ModeloTarefa.query.filter_by(id_tarefa=id).first()
     if tarefa:
         db.session.delete(tarefa)
@@ -83,7 +83,7 @@ def delete(id):
 
 # Definicao da rota de remocao de dados de uma unica tarefa
 @app.route('/tarefas/deletar', methods=['POST', 'DELETE'])
-def deleteAll():
+def deletar_todas():
     db.session.query(ModeloTarefa).delete()
     db.session.commit()
     return jsonify({'resposta': 'sucesso'})

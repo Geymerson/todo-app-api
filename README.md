@@ -5,7 +5,7 @@ Instalando os módulos
 > pip install -r requirements.txt
 
 Executando a aplicação
-> python todo_list_app.py
+> python main.py
 
 ## Rotas
 

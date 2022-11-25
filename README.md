@@ -1,7 +1,7 @@
 # todo-app-project
 
 
-Instalando os módulos
+Instalando os módulos (Python 3.8.10)
 > pip install -r requirements.txt
 
 Executando a aplicação

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from models import db, ModeloTarefa
 
 app = Flask(__name__)
@@ -8,7 +9,7 @@ app = Flask(__name__)
 # Configuracoes da base de dados
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todo_list.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
+CORS(app)
 db.init_app(app)
 
 @app.before_first_request

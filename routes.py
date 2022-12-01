@@ -17,6 +17,11 @@ def criar_banco_de_dados():
     db.create_all()
 
 # Definicao da rota de consulta de dados
+@app.route('/')
+def home():
+    return 'Olá, mundo! O servidor está online!'
+
+# Definicao da rota de consulta de dados
 @app.route('/tarefas')
 def carregar_tarefas():
     tarefas = ModeloTarefa.query.all()
@@ -25,11 +30,10 @@ def carregar_tarefas():
 # Definicao da rota de escrita de dados
 @app.route('/tarefas/cadastrar' , methods = ['POST'])
 def cadastrar_tarefa():
-    id_tarefa = request.form['id_tarefa']
     titulo = request.form['titulo']
     status = request.form['status']
     if(status == '0' or status == '1'):
-        tarefa = ModeloTarefa(id_tarefa=id_tarefa, titulo=titulo, status=status)
+        tarefa = ModeloTarefa(titulo=titulo, status=status)
         db.session.add(tarefa)
         db.session.commit()
         return jsonify({'resposta': 'sucesso'})
@@ -50,7 +54,7 @@ def carregar_tarefas_finalizadas():
 # Definicao da rota de consulta de dados de uma unica tarefa
 @app.route('/tarefas/<int:id>')
 def buscar_tarefa(id):
-    tarefa = ModeloTarefa.query.filter_by(id_tarefa=id).first()
+    tarefa = ModeloTarefa.query.filter_by(id=id).first()
     if tarefa:
         return jsonify(str(tarefa))
     return jsonify({'resposta': 'não encontrada'})
@@ -58,14 +62,14 @@ def buscar_tarefa(id):
 # Definicao da rota de atualizacao de dados de um aunica tarefa
 @app.route('/tarefas/<int:id>/atualizar', methods = ['POST', 'PUT'])
 def atualizar_tarefa(id):
-    tarefa = ModeloTarefa.query.filter_by(id_tarefa=id).first()
+    tarefa = ModeloTarefa.query.filter_by(id=id).first()
     if tarefa:
         db.session.delete(tarefa)
         db.session.commit()
 
         titulo = request.form['titulo']
         status = request.form['status']
-        tarefa = ModeloTarefa(id_tarefa=id, titulo=titulo, status=status)
+        tarefa = ModeloTarefa(titulo=titulo, status=status)
 
         db.session.add(tarefa)
         db.session.commit()
@@ -75,7 +79,7 @@ def atualizar_tarefa(id):
 # Definicao da rota de remocao de dados de uma unica tarefa
 @app.route('/tarefas/<int:id>/deletar', methods = ['POST', 'DELETE'])
 def deletar_tarefa(id):
-    tarefa = ModeloTarefa.query.filter_by(id_tarefa=id).first()
+    tarefa = ModeloTarefa.query.filter_by(id=id).first()
     if tarefa:
         db.session.delete(tarefa)
         db.session.commit()

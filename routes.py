@@ -16,7 +16,7 @@ db.init_app(app)
 def criar_banco_de_dados():
     db.create_all()
 
-# Definicao da rota de consulta de dados
+# Definicao da rota da página inicial
 @app.route('/')
 def home():
     return 'Olá, mundo! O servidor está online!'
@@ -59,7 +59,7 @@ def buscar_tarefa(id):
         return jsonify(str(tarefa))
     return jsonify({'resposta': 'não encontrada'})
 
-# Definicao da rota de atualizacao de dados de um aunica tarefa
+# Definicao da rota de atualizacao de dados de uma unica tarefa
 @app.route('/tarefas/<int:id>/atualizar', methods = ['POST', 'PUT'])
 def atualizar_tarefa(id):
     tarefa = ModeloTarefa.query.filter_by(id=id).first()
@@ -86,7 +86,7 @@ def deletar_tarefa(id):
         return jsonify({'resposta': 'sucesso'})
     return jsonify({'resposta': 'não encontrada'})
 
-# Definicao da rota de remocao de dados de uma unica tarefa
+# Definicao da rota de remocao de dados de todas as tarefas
 @app.route('/tarefas/deletar', methods=['POST', 'DELETE'])
 def deletar_todas():
     db.session.query(ModeloTarefa).delete()
